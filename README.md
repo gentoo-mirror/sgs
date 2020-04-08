@@ -26,7 +26,9 @@ next official release of *sakura*.
 
 ## Setup
 
-TODO: The overlay is not added to the official overlay list as of now
+   ```bash
+   layman -a sgs
+   ```
 
 
 ## Author

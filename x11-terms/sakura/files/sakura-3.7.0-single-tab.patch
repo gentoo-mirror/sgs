@@ -1,0 +1,13 @@
+diff -rupN sakura-3.7.0.old/src/sakura.c sakura-3.7.0/src/sakura.c
+--- sakura-3.7.0.old/src/sakura.c	2019-08-12 23:13:08.000000000 +0200
++++ sakura-3.7.0/src/sakura.c	2019-12-01 20:21:29.067142517 +0100
+@@ -511,6 +511,9 @@ sakura_key_press (GtkWidget *widget, Gdk
+ 	if ( ((event->state & sakura.switch_tab_accelerator) == sakura.switch_tab_accelerator) && 
+ 	     ((event->state & sakura.move_tab_accelerator) != sakura.move_tab_accelerator) ) {
+ 
++		/* Just propagate the event if there is only one tab */
++		if(npages < 2) return FALSE;
++
+ 		if ((keycode>=sakura_tokeycode(GDK_KEY_1)) && (keycode<=sakura_tokeycode( GDK_KEY_9))) {  
+ 
+ 			/* User has explicitly disabled this branch, make sure to propagate the event */

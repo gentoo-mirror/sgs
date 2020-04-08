@@ -1,0 +1,267 @@
+diff -x .git -rupN sylpheed-3.7.0/libsylph/prefs_common.c sylpheed-3.7.0.new/libsylph/prefs_common.c
+--- sylpheed-3.7.0/libsylph/prefs_common.c	2017-11-24 05:17:23.000000000 +0100
++++ sylpheed-3.7.0.new/libsylph/prefs_common.c	2018-01-31 10:52:57.094885505 +0100
+@@ -406,6 +406,8 @@ static PrefParam param[] = {
+ 	 P_BOOL},
+ 	{"gpg_signature_popup", "FALSE", &prefs_common.gpg_signature_popup,
+ 	 P_BOOL},
++	{"gpg_signature_popup_mode", "1", &prefs_common.gpg_signature_popup_mode,
++	 P_INT},
+ 	{"store_passphrase", "FALSE", &prefs_common.store_passphrase, P_BOOL},
+ 	{"store_passphrase_timeout", "0",
+ 	 &prefs_common.store_passphrase_timeout, P_INT},
+diff -x .git -rupN sylpheed-3.7.0/libsylph/prefs_common.h sylpheed-3.7.0.new/libsylph/prefs_common.h
+--- sylpheed-3.7.0/libsylph/prefs_common.h	2017-11-24 05:16:18.000000000 +0100
++++ sylpheed-3.7.0.new/libsylph/prefs_common.h	2018-01-31 10:52:57.052886536 +0100
+@@ -243,6 +243,7 @@ struct _PrefsCommon
+ 	/* Privacy */
+ 	gboolean auto_check_signatures;
+ 	gboolean gpg_signature_popup;
++	gint gpg_signature_popup_mode;
+ 	gboolean store_passphrase;
+ 	gint store_passphrase_timeout;
+ 	gboolean passphrase_grab;
+diff -x .git -rupN sylpheed-3.7.0/src/prefs_common_dialog.c sylpheed-3.7.0.new/src/prefs_common_dialog.c
+--- sylpheed-3.7.0/src/prefs_common_dialog.c	2014-11-05 08:28:13.000000000 +0100
++++ sylpheed-3.7.0.new/src/prefs_common_dialog.c	2018-01-31 10:52:57.184883295 +0100
+@@ -205,6 +205,7 @@ static struct JunkMail {
+ static struct Privacy {
+ 	GtkWidget *checkbtn_auto_check_signatures;
+ 	GtkWidget *checkbtn_gpg_signature_popup;
++	GtkWidget *radiobtn_gpg_signature_all;
+ 	GtkWidget *checkbtn_store_passphrase;
+ 	GtkWidget *spinbtn_store_passphrase;
+ 	GtkObject *spinbtn_store_passphrase_adj;
+@@ -314,6 +315,13 @@ static void prefs_common_attach_toolbtn_
+ static void prefs_common_online_mode_set_data_from_radiobtn(PrefParam *pparam);
+ static void prefs_common_online_mode_set_radiobtn	   (PrefParam *pparam);
+ 
++#if USE_GPGME
++static void prefs_common_gpg_signature_popup_mode_set_data_from_radiobtn(
++	PrefParam *pparam);
++static void prefs_common_gpg_signature_popup_mode_set_radiobtn(
++	PrefParam *pparam);
++#endif
++
+ static PrefsUIData ui_data[] = {
+ 	/* Receive */
+ 	{"autochk_newmail", &receive.checkbtn_autochk,
+@@ -540,6 +548,9 @@ static PrefsUIData ui_data[] = {
+ 	 prefs_set_data_from_toggle, prefs_set_toggle},
+ 	{"gpg_signature_popup", &privacy.checkbtn_gpg_signature_popup,
+ 	 prefs_set_data_from_toggle, prefs_set_toggle},
++	{"gpg_signature_popup_mode", &privacy.radiobtn_gpg_signature_all,
++	 prefs_common_gpg_signature_popup_mode_set_data_from_radiobtn,
++	 prefs_common_gpg_signature_popup_mode_set_radiobtn},
+ 	{"store_passphrase", &privacy.checkbtn_store_passphrase,
+ 	 prefs_set_data_from_toggle, prefs_set_toggle},
+ 	{"store_passphrase_timeout", &privacy.spinbtn_store_passphrase,
+@@ -2478,10 +2489,14 @@ static void prefs_privacy_create(void)
+ 	GtkWidget *vbox2;
+ 	GtkWidget *vbox3;
+ 	GtkWidget *hbox1;
++	GtkWidget *vbox_sign_popup_mode;
++	GtkWidget *hbox_sign_popup_mode;
+ 	GtkWidget *hbox_spc;
+ 	GtkWidget *label;
+ 	GtkWidget *checkbtn_auto_check_signatures;
+ 	GtkWidget *checkbtn_gpg_signature_popup;
++	GtkWidget *radiobtn_gpg_signature_all;
++	GtkWidget *radiobtn_gpg_signature_bad;
+ 	GtkWidget *checkbtn_store_passphrase;
+ 	GtkObject *spinbtn_store_passphrase_adj;
+ 	GtkWidget *spinbtn_store_passphrase;
+@@ -2505,6 +2520,56 @@ static void prefs_privacy_create(void)
+ 	PACK_CHECK_BUTTON (vbox2, checkbtn_gpg_signature_popup,
+ 			   _("Show signature check result in a popup window"));
+ 
++	vbox_sign_popup_mode = gtk_vbox_new (FALSE, VSPACING_NARROW);
++	gtk_widget_show (vbox_sign_popup_mode);
++	gtk_box_pack_start (GTK_BOX (vbox2), vbox_sign_popup_mode, FALSE, FALSE, 0);
++
++	hbox_sign_popup_mode = gtk_hbox_new (FALSE, 8);
++	gtk_widget_show (hbox_sign_popup_mode);
++	gtk_box_pack_start (GTK_BOX (vbox_sign_popup_mode),
++						hbox_sign_popup_mode,
++						FALSE,
++						FALSE,
++						0);
++
++	hbox_spc = gtk_hbox_new (FALSE, 0);
++	gtk_widget_show (hbox_spc);
++	gtk_box_pack_start (GTK_BOX (hbox_sign_popup_mode),
++						hbox_spc,
++						FALSE,
++						FALSE,
++						0);
++	gtk_widget_set_size_request (hbox_spc, 12, -1);
++
++	radiobtn_gpg_signature_all = gtk_radio_button_new_with_label(
++		NULL,
++		_("All signatures"));
++	gtk_widget_show(radiobtn_gpg_signature_all);
++	gtk_box_pack_start(GTK_BOX (hbox_sign_popup_mode),
++					   radiobtn_gpg_signature_all,
++					   FALSE,
++					   FALSE,
++					   0);
++	g_object_set_data(G_OBJECT (radiobtn_gpg_signature_all),
++					  MENU_VAL_ID,
++					  GINT_TO_POINTER (1));
++
++	radiobtn_gpg_signature_bad = gtk_radio_button_new_with_label_from_widget(
++		GTK_RADIO_BUTTON (radiobtn_gpg_signature_all),
++		_("Bad signatures only"));
++	gtk_widget_show(radiobtn_gpg_signature_bad);
++	gtk_box_pack_start(GTK_BOX (hbox_sign_popup_mode),
++					   radiobtn_gpg_signature_bad,
++					   FALSE,
++					   FALSE,
++					   0);
++	g_object_set_data(G_OBJECT (radiobtn_gpg_signature_bad),
++					  MENU_VAL_ID,
++					  GINT_TO_POINTER (0));
++
++	SET_TOGGLE_SENSITIVITY (checkbtn_gpg_signature_popup,
++							hbox_sign_popup_mode);
++
+ 	PACK_CHECK_BUTTON (vbox2, checkbtn_store_passphrase,
+ 			   _("Store passphrase in memory temporarily"));
+ 
+@@ -2572,7 +2637,8 @@ static void prefs_privacy_create(void)
+ 					     = checkbtn_auto_check_signatures;
+ 	privacy.checkbtn_gpg_signature_popup
+ 					     = checkbtn_gpg_signature_popup;
+-	privacy.checkbtn_store_passphrase    = checkbtn_store_passphrase;
++	privacy.radiobtn_gpg_signature_all = radiobtn_gpg_signature_all;
++	privacy.checkbtn_store_passphrase	 = checkbtn_store_passphrase;
+ 	privacy.spinbtn_store_passphrase     = spinbtn_store_passphrase;
+ 	privacy.spinbtn_store_passphrase_adj = spinbtn_store_passphrase_adj;
+ #ifndef G_OS_WIN32
+@@ -4719,6 +4785,60 @@ static void prefs_common_online_mode_set
+ 	}
+ }
+ 
++#if USE_GPGME
++static void prefs_common_gpg_signature_popup_mode_set_data_from_radiobtn(
++	PrefParam *pparam)
++{
++	PrefsUIData *ui_data;
++	GtkRadioButton *radiobtn;
++	GSList *group;
++
++	ui_data = (PrefsUIData *)pparam->ui_data;
++	g_return_if_fail(ui_data != NULL);
++	g_return_if_fail(*ui_data->widget != NULL);
++
++	radiobtn = GTK_RADIO_BUTTON(*ui_data->widget);
++	group = gtk_radio_button_get_group(radiobtn);
++	while (group != NULL) {
++		GtkToggleButton *btn = GTK_TOGGLE_BUTTON(group->data);
++
++		if (gtk_toggle_button_get_active(btn)) {
++			prefs_common.gpg_signature_popup_mode =
++				GPOINTER_TO_INT(g_object_get_data(G_OBJECT(btn), MENU_VAL_ID));
++			break;
++		}
++		group = group->next;
++	}
++}
++
++static void prefs_common_gpg_signature_popup_mode_set_radiobtn(
++	PrefParam *pparam)
++{
++	PrefsUIData *ui_data;
++	GtkRadioButton *radiobtn;
++	GSList *group;
++
++	ui_data = (PrefsUIData *)pparam->ui_data;
++	g_return_if_fail(ui_data != NULL);
++	g_return_if_fail(*ui_data->widget != NULL);
++
++	radiobtn = GTK_RADIO_BUTTON(*ui_data->widget);
++	group = gtk_radio_button_get_group(radiobtn);
++	while (group != NULL) {
++		GtkToggleButton *btn = GTK_TOGGLE_BUTTON(group->data);
++		gint data;
++
++		data = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(btn),
++							 MENU_VAL_ID));
++		if (data == prefs_common.gpg_signature_popup_mode) {
++			gtk_toggle_button_set_active(btn, TRUE);
++			break;
++		}
++		group = group->next;
++	}
++}
++#endif
++
+ static void prefs_common_dispitem_clicked(void)
+ {
+ 	prefs_summary_column_open(FOLDER_ITEM_IS_SENT_FOLDER
+diff -x .git -rupN sylpheed-3.7.0/src/rfc2015.c sylpheed-3.7.0.new/src/rfc2015.c
+--- sylpheed-3.7.0/src/rfc2015.c	2014-03-26 06:55:35.000000000 +0100
++++ sylpheed-3.7.0.new/src/rfc2015.c	2018-01-31 11:10:44.946662147 +0100
+@@ -210,8 +210,12 @@ static void check_signature(MimeInfo *mi
+ 	gchar *tmp_file;
+ 	gint n_exclude_chars = 0;
+ 
+-	if (prefs_common.gpg_signature_popup)
++	if (prefs_common.gpg_signature_popup &&
++		prefs_common.gpg_signature_popup_mode == 1)
++	{
++		/* FIXME: Perhaps some macro instead of 1 */
+ 		statuswindow = gpgmegtk_sig_status_create();
++	}
+ 
+ 	err = gpgme_new(&ctx);
+ 	if (err) {
+@@ -309,8 +313,21 @@ leave:
+ 		result = _("Error verifying the signature");
+ 	}
+ 	debug_print("verification status: %s\n", result);
+-	if (prefs_common.gpg_signature_popup)
++	if (prefs_common.gpg_signature_popup &&
++        prefs_common.gpg_signature_popup_mode == 1)
++    {
++        /* FIXME: Perhaps some macro instead of 1 */
++		gpgmegtk_sig_status_update(statuswindow, ctx);
++	} else if (prefs_common.gpg_signature_popup &&
++			   verifyresult->signatures->status != GPG_ERR_NO_DATA &&
++			   verifyresult->signatures->status != GPG_ERR_NO_ERROR)
++	{
++		/* prefs_common.gpg_signature_popup_mode == 0 is useless as long as
++		 * there are only two modes (0 and 1)
++		 */
++		statuswindow = gpgmegtk_sig_status_create();
+ 		gpgmegtk_sig_status_update(statuswindow, ctx);
++	}
+ 
+ 	g_free (partinfo->sigstatus);
+ 	partinfo->sigstatus = g_strdup (result);
+@@ -319,8 +336,11 @@ leave:
+ 	gpgme_data_release(text);
+ 	if (ctx)
+ 		gpgme_release(ctx);
+-	if (prefs_common.gpg_signature_popup)
++	if (prefs_common.gpg_signature_popup) {
++		/* gpgmegtk_sig_status_destroy handles NULL params so no complicated
++		   check is needed */
+ 		gpgmegtk_sig_status_destroy(statuswindow);
++	}
+ }
+ 
+ /*
+@@ -427,7 +447,11 @@ static gpgme_data_t pgp_decrypt(MsgInfo
+ 		debug_print("verification status: %s\n", result);
+ 		debug_print("full status: %s\n",
+ 			    msginfo->encinfo->sigstatus_full);
+-		if (prefs_common.gpg_signature_popup) {
++		if (prefs_common.gpg_signature_popup &&
++			((prefs_common.gpg_signature_popup_mode == 1) ||
++			 (verifyresult->signatures->status != GPG_ERR_NO_DATA &&
++			  verifyresult->signatures->status != GPG_ERR_NO_ERROR)))
++		{
+ 			GpgmegtkSigStatus statuswindow;
+ 			statuswindow = gpgmegtk_sig_status_create();
+ 			gpgmegtk_sig_status_update(statuswindow, ctx);

@@ -3,3 +3,4 @@
 # * generated automatically using pmaint *
 
 mail-client/sylpheed:oniguruma - Use dev-libs/oniguruma for regular expression
+x11-terms/terminator:libnotify - Enables desktop notifications viadev-python/notify-python

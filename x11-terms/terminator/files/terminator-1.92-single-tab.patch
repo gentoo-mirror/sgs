@@ -1,0 +1,25 @@
+diff -rupN terminator-1.92.old/terminatorlib/terminal.py terminator-1.92/terminatorlib/terminal.py
+--- terminator-1.92.old/terminatorlib/terminal.py	2020-04-18 12:36:56.385817800 +0200
++++ terminator-1.92/terminatorlib/terminal.py	2020-05-04 09:45:38.714358482 +0200
+@@ -887,6 +887,21 @@ class Terminal(Gtk.VBox):
+         # FIXME: Does keybindings really want to live in Terminator()?
+         mapping = self.terminator.keybindings.lookup(event)
+ 
++        # sgs patch
++        if (
++                mapping and (
++                    mapping.startswith('switch_to_tab') or
++                    mapping in ('next_tab', 'prev_tab')
++                )
++        ):
++            window = self.get_toplevel()
++            child = window.get_children()[0]
++            if isinstance(child, Terminal):
++                # not a Notebook instance => a single tab is used
++                # .get_n_pages() can not be used
++                return(False)
++        #
++
+         if mapping == "hide_window":
+             return(False)
+ 

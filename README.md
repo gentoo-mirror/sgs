@@ -23,6 +23,9 @@ and niceties - https://github.com/blackm0re/i3lock-extended
 when no multiple tabs are spawned. This patch is expected to go upstream in the
 next official release of *sakura*.
 
+* x11-terms/terminator - contains own patch that prevents tab events to be consumed
+when no multiple tabs are spawned.
+
 
 ## Setup
 

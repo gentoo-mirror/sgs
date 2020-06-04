@@ -2,4 +2,4 @@ dev-python/pyotp2289 1.0.0: A pure Python 3 implementation of RFC-2289 - 'A One-
 mail-client/sylpheed 3.7.0-r1: A lightweight email client and newsreader (patched by sgs)
 x11-misc/i3lock-extended 1.2.12a: i3lock-extended - i3lock fork with additional functionality
 x11-terms/sakura 3.7.0: sakura is a terminal emulator based on GTK and VTE
-x11-terms/terminator 1.92: Multiple GNOME terminals in one window (patched by sgs)
+x11-terms/terminator 1.92-r1: Multiple GNOME terminals in one window (patched by sgs)

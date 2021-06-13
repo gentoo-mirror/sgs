@@ -29,4 +29,4 @@ and niceties - https://github.com/blackm0re/i3lock-extended
 
 ## Author
 
-Simeon Simeonov - sgs @ Freenode
+Simeon Simeonov - sgs @ LiberaChat

@@ -1,10 +1,10 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 DISTUTILS_USE_SETUPTOOLS=rdepend
-PYTHON_COMPAT=( python3_{7,8,9,10} )
+PYTHON_COMPAT=( python3_{7..10} )
 
 inherit distutils-r1
 
@@ -13,7 +13,7 @@ HOMEPAGE="https://github.com/blackm0re/etoolkit"
 MY_PN="etoolkit"
 MY_P="${MY_PN}-${PV}"
 SRC_URI="mirror://pypi/${MY_P:0:1}/${MY_PN}/${MY_P}.tar.gz"
-KEYWORDS="amd64 arm ~arm64 ppc ppc64 x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 arm arm64 hppa ia64 ppc ppc64 riscv s390 x86"
 S="${WORKDIR}/${MY_P}"
 
 LICENSE="BSD"
@@ -21,7 +21,10 @@ SLOT="0"
 IUSE="test"
 RESTRICT="!test? ( test )"
 
-DEPEND="
+RDEPEND="
+	>=dev-python/cryptography-3.2.0[${PYTHON_USEDEP}]"
+
+BDEPEND="
 	dev-python/setuptools[${PYTHON_USEDEP}]
 	test? (
 		${RDEPEND}

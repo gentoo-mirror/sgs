@@ -3,7 +3,7 @@
 
 EAPI=8
 
-DISTUTILS_USE_SETUPTOOLS=rdepend
+DISTUTILS_USE_SETUPTOOLS=pyproject.toml
 PYTHON_COMPAT=( python3_{7..10} )
 
 inherit distutils-r1
@@ -14,7 +14,7 @@ MY_PN="etoolkit"
 MY_P="${MY_PN}-${PV}"
 SRC_URI="mirror://pypi/${MY_P:0:1}/${MY_PN}/${MY_P}.tar.gz"
 KEYWORDS="amd64 arm arm64 hppa ia64 ppc ppc64 riscv s390 x86"
-S="${WORKDIR}/${MY_P}"
+S="${WORKDIR}/${MY_P}/src"
 
 LICENSE="BSD"
 SLOT="0"

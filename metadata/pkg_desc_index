@@ -1,5 +1,4 @@
-app-backup/duplicity 0.8.21-r1: Secure backup system using gnupg to encrypt data
-dev-python/etoolkit 1.0.0-r1: A simple toolkit for setting environment variables in a flexible way
+dev-python/etoolkit 1.0.0-r1 1.1.0: A simple toolkit for setting environment variables in a flexible way
 dev-python/pyotp2289 1.0.0-r1: A pure Python 3 implementation of RFC-2289 - 'A One-Time Password System'
 mail-client/sylpheed 3.7.0-r1: A lightweight email client and newsreader (patched by sgs)
 www-servers/ngus 1.0: A minimalist HTTP server written in pure Python and intended for receiving file uploads

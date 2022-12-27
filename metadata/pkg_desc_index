@@ -4,4 +4,4 @@ mail-client/sylpheed 3.7.0-r1: A lightweight email client and newsreader (patche
 sec-keys/openpgp-keys-simeonsimeonov 20220409: OpenPGP keys used by Simeon Simeonov
 www-servers/ngus 1.0: A minimalist HTTP server written in pure Python and intended for receiving file uploads
 x11-misc/i3lock-extended 1.2.12a 2.2.13a: i3lock-extended - i3lock fork with additional functionality
-x11-terms/terminator 2.1.1-r1: Multiple GNOME terminals in one window
+x11-terms/terminator 2.1.1-r2: Multiple GNOME terminals in one window

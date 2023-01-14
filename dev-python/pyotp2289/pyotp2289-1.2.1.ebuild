@@ -15,7 +15,7 @@ MY_P="${MY_PN}-${PV}"
 
 SRC_URI="
 	mirror://pypi/${MY_P:0:1}/${MY_PN}/${MY_P}.tar.gz
-	verify-sig? ( https://github.com/blackm0re/pyotp2289/releases/download/${PV}/${MY_P}.tar.gz.asc )
+	verify-sig? ( https://github.com/blackm0re/pyotp2289/releases/download/v${PV}/${MY_P}.tar.gz.asc )
 "
 
 KEYWORDS="amd64 arm arm64 ppc ppc64 x86"

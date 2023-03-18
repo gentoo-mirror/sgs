@@ -1,0 +1,15 @@
+BDEPEND=virtual/pkgconfig verify-sig? ( sec-keys/openpgp-keys-simeonsimeonov ) >=dev-util/meson-0.62.2 >=dev-util/ninja-1.8.2 dev-util/meson-format-array verify-sig? ( app-crypt/gnupg >=app-portage/gemato-16 )
+DEFINED_PHASES=compile configure install prepare test unpack
+DEPEND=dev-libs/libev sys-libs/pam x11-libs/cairo[X,xcb(+)] x11-libs/libxcb x11-libs/libxkbcommon[X] x11-libs/xcb-util x11-libs/xcb-util-image x11-libs/xcb-util-xrm
+DESCRIPTION=i3lock-extended - i3lock fork with additional functionality
+EAPI=8
+HOMEPAGE=https://github.com/blackm0re/i3lock-extended
+INHERIT=meson verify-sig
+IUSE=verify-sig
+KEYWORDS=amd64 ~arm ~arm64 ~ppc64 ~riscv x86
+LICENSE=GPL-3+ BSD
+RDEPEND=dev-libs/libev sys-libs/pam x11-libs/cairo[X,xcb(+)] x11-libs/libxcb x11-libs/libxkbcommon[X] x11-libs/xcb-util x11-libs/xcb-util-image x11-libs/xcb-util-xrm
+SLOT=0
+SRC_URI=https://github.com/blackm0re/i3lock-extended/releases/download/2.2.14/i3lock-extended-2.2.14.tar.xz verify-sig? ( https://github.com/blackm0re/i3lock-extended/releases/download/2.2.14/i3lock-extended-2.2.14.tar.xz.asc )
+_eclasses_=multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	38c85b725d0467e51954ea921b6c104b	toolchain-funcs	6001248ef162a5fa2a21ce132a212f6b	multilib	5ca4e49abed8e3a2f7b56920eadee157	python-utils-r1	429bfd4e8d8e39db5385ba5744f30788	meson	cd2865332c8d99e1da0655523ff4a28f	verify-sig	fef00f802a62a8d9e66affc69e141df0
+_md5_=adb88d6fc0aff2345eec6246b1de725e

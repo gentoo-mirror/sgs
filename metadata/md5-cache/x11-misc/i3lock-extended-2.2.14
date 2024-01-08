@@ -11,5 +11,5 @@ LICENSE=GPL-3+ BSD
 RDEPEND=dev-libs/libev sys-libs/pam x11-libs/cairo[X,xcb(+)] x11-libs/libxcb x11-libs/libxkbcommon[X] x11-libs/xcb-util x11-libs/xcb-util-image x11-libs/xcb-util-xrm
 SLOT=0
 SRC_URI=https://github.com/blackm0re/i3lock-extended/releases/download/2.2.14/i3lock-extended-2.2.14.tar.xz verify-sig? ( https://github.com/blackm0re/i3lock-extended/releases/download/2.2.14/i3lock-extended-2.2.14.tar.xz.asc )
-_eclasses_=multiprocessing	30ead54fa2e2b5f9cd4e612ffc34d0fe	ninja-utils	c8951c1dfcc1d43e3f967f61fd0ec59c	toolchain-funcs	e56c7649b804f051623c8bc1a1c44084	multilib	c19072c3cd7ac5cb21de013f7e9832e0	python-utils-r1	042f4cc53680245bf99a84669b94155a	meson	0e160eeba59c15ec333bd675cecdfdc9	verify-sig	798e0173d334021f14ba78a786c37059
+_eclasses_=multiprocessing	30ead54fa2e2b5f9cd4e612ffc34d0fe	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	toolchain-funcs	e56c7649b804f051623c8bc1a1c44084	multilib	c19072c3cd7ac5cb21de013f7e9832e0	python-utils-r1	042f4cc53680245bf99a84669b94155a	meson	0e160eeba59c15ec333bd675cecdfdc9	verify-sig	798e0173d334021f14ba78a786c37059
 _md5_=adb88d6fc0aff2345eec6246b1de725e

@@ -18,11 +18,12 @@ SRC_URI="
 	verify-sig? ( https://github.com/blackm0re/etoolkit/releases/download/${PV}/${MY_P}.tar.gz.asc )
 "
 
-KEYWORDS="amd64 arm arm64 ppc ppc64 sparc x86"
 S="${WORKDIR}/${MY_P}"
 
 LICENSE="GPL-3+"
 SLOT="0"
+
+KEYWORDS="amd64 arm64 x86"
 
 RDEPEND="
 	>=dev-python/cryptography-3.2.0[${PYTHON_USEDEP}]
@@ -33,7 +34,7 @@ BDEPEND="
 
 distutils_enable_tests pytest
 
-VERIFY_SIG_OPENPGP_KEY_PATH=${BROOT}/usr/share/openpgp-keys/simeonsimeonov.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/simeonsimeonov.asc
 
 python_test() {
 	epytest -s

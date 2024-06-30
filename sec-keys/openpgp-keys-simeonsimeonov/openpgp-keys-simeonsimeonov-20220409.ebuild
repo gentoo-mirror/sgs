@@ -7,11 +7,11 @@ DESCRIPTION="OpenPGP keys used by Simeon Simeonov"
 HOMEPAGE="https://github.com/blackm0re"
 SRC_URI="https://simeon.simeonov.no/sgs.gpg"
 
+S=${WORKDIR}
+
 LICENSE="public-domain"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86"
-
-S=${WORKDIR}
+KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 riscv s390 sparc x86"
 
 src_install() {
 	local files=( ${A} )

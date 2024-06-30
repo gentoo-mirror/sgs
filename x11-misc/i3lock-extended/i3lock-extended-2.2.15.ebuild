@@ -31,7 +31,7 @@ BDEPEND="
 	verify-sig? ( sec-keys/openpgp-keys-simeonsimeonov )
 "
 
-VERIFY_SIG_OPENPGP_KEY_PATH=${BROOT}/usr/share/openpgp-keys/simeonsimeonov.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/simeonsimeonov.asc
 
 src_prepare() {
 	default

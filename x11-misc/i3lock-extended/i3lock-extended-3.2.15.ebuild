@@ -31,6 +31,8 @@ BDEPEND="
 	verify-sig? ( sec-keys/openpgp-keys-simeonsimeonov )
 "
 
+RESTRICT="mirror"
+
 VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/simeonsimeonov.asc
 
 src_prepare() {

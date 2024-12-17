@@ -23,7 +23,7 @@ S="${WORKDIR}/${MY_P}"
 LICENSE="GPL-3+"
 SLOT="0"
 
-KEYWORDS="amd64 arm64 x86"
+KEYWORDS="amd64 arm64"
 
 RDEPEND="
 	>=dev-python/cryptography-3.2.0[${PYTHON_USEDEP}]
@@ -31,6 +31,8 @@ RDEPEND="
 BDEPEND="
 	verify-sig? ( sec-keys/openpgp-keys-simeonsimeonov )
 "
+
+RESTRICT="mirror"
 
 distutils_enable_tests pytest
 

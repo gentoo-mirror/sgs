@@ -29,6 +29,8 @@ BDEPEND="
 	verify-sig? ( sec-keys/openpgp-keys-simeonsimeonov )
 "
 
+RESTRICT="mirror"
+
 distutils_enable_tests pytest
 
 VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/simeonsimeonov.asc

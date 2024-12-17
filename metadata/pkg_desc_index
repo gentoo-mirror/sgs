@@ -2,4 +2,4 @@ dev-python/etoolkit 2.0.0: A simple toolkit for setting environment variables in
 dev-python/pyotp2289 1.2.1: A pure Python 3 implementation of RFC-2289 - 'A One-Time Password System'
 media-libs/quesoglc 0.7.2-r2: Free implementation of the OpenGL Character Renderer (GLC)
 sec-keys/openpgp-keys-simeonsimeonov 20220409: OpenPGP keys used by Simeon Simeonov
-x11-misc/i3lock-extended 2.2.15 3.2.15: i3lock-extended - i3lock fork with additional functionality
+x11-misc/i3lock-extended 3.2.15: i3lock-extended - i3lock fork with additional functionality
